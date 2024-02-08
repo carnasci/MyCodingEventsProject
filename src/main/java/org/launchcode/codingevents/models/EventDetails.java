@@ -11,10 +11,10 @@ public class EventDetails extends AbstractEntity {
     @Size(max = 500, message = "Description too long!")
     private String description;
     @NotBlank(message = "Contact Email is required!")
-    @Email(message = "Invalid email. Please try again!")
+    @Email(message = "Invalid email. Try again.")
     private String contactEmail;
 
-    public EventDetails(String description, String contactEmail) {
+    public EventDetails(@Size(max = 500, message = "Description too long!") String description, @NotBlank(message = "Email is required!") @Email(message = "Invalid email. Try again.") String contactEmail) {
         this.description = description;
         this.contactEmail = contactEmail;
     }
