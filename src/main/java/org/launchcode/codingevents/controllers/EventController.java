@@ -2,9 +2,9 @@ package org.launchcode.codingevents.controllers;
 
 
 import jakarta.validation.Valid;
+import org.launchcode.codingevents.data.EventCategoryRepository;
 import org.launchcode.codingevents.data.EventRepository;
 import org.launchcode.codingevents.models.Event;
-import org.launchcode.codingevents.models.EventType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,22 +21,13 @@ public class EventController {
     @Autowired
     private EventRepository eventRepository;
 
+    @Autowired
+    private EventCategoryRepository eventCategoryRepository;
+
 
 
     @GetMapping
     public String displayAllEvents(Model model) {
-        /*List<String> events = new ArrayList<>();
-        events.add("Code With Pride");
-        events.add("Strange Loop");
-        events.add("Apple WWDC");
-        events.add("SpringOne Platform");*/
-
-        Map<String, String> events = new HashMap<>();
-        events.put("Menteaship","A fun meetup for connecting with mentors");
-        events.put("Code With Pride","A fun meetup sponsored by LaunchCode");
-        events.put("Javascripty", "An imaginary meetup for Javascript developers");
-
-
         model.addAttribute("title", "All Events");
         model.addAttribute("events", eventRepository.findAll());
         return "events/index";
@@ -46,7 +37,7 @@ public class EventController {
     public String renderCreateEventForm(Model model) {
         model.addAttribute("title", "Create Event");
         model.addAttribute(new Event());
-        model.addAttribute("types", EventType.values());
+        model.addAttribute("categories", eventCategoryRepository.findAll());
         return "events/create";
     }
 
@@ -66,7 +57,7 @@ public class EventController {
     public String displayDeleteEventForm(Model model) {
         model.addAttribute("title", "Delete Events");
         model.addAttribute("events", eventRepository.findAll());
-        return "event/delete";
+        return "events/delete";
     }
 
     @PostMapping("delete")
@@ -76,7 +67,7 @@ public class EventController {
                 eventRepository.deleteById(id);
             }
         }
-        return "redirect:";
+        return "redirect:/events";
     }
 
 }
